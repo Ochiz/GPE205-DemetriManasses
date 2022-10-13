@@ -6,14 +6,15 @@ public abstract class Controller : MonoBehaviour
 {
     public Pawn pawn;
     // Start is called before the first frame update
-    void virtual Start()
+    public virtual void Start()
     {
         
     }
 
     // Update is called once per frame
-    void virtual Update()
+    public virtual void Update()
     {
         
     }
+    public abstract void ProcessInputs();
 }

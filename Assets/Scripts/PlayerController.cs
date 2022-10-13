@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class PlayerController : Controller
 {
-    public KeyCode moveForwardKey();
-    public KeyCode moveBackwardKey();
-    public KeyCode rotateClockwiseKey();
-    public KeyCode rotateCounterClockwiseKey();
+    public KeyCode moveForwardKey;
+    public KeyCode moveBackwardKey;
+    public KeyCode rotateClockwiseKey;
+    public KeyCode rotateCounterClockwiseKey;
     // Start is called before the first frame update
     public override void Start()
     {
@@ -22,19 +22,19 @@ public class PlayerController : Controller
     }
     public override void ProcessInputs()
     {
-        if(ProcessInputs.GetKey(moveForwardKey))
+        if(Input.GetKey(moveForwardKey))
         {
             pawn.MoveForward();
         }
-        if (ProcessInputs.GetKey(moveBackwardKey))
+        if (Input.GetKey(moveBackwardKey))
         {
             pawn.MoveBackward();
         }
-        if (ProcessInputs.GetKey(rotateClockwiseKey))
+        if (Input.GetKey(rotateClockwiseKey))
         {
             pawn.RotateClockwise();
         }
-        if (ProcessInputs.GetKey(rotateCounterClockwiseKey))
+        if (Input.GetKey(rotateCounterClockwiseKey))
         {
             pawn.RotateCounterClockwise();
         }

@@ -17,18 +17,18 @@ public class TankPawn : Pawn
     }
     public override void MoveForward()
     {
-        Debug.log("hi");
+        Debug.Log("hi");
     }
     public override void MoveBackward()
     {
-        Debug.log("hi2");
+        Debug.Log("hi2");
     }
     public override void RotateClockwise()
     {
-        Debug.log("hi3");
+        Debug.Log("hi3");
     }
     public override void RotateCounterClockwise()
     {
-        Debug.log("hi4");
+        Debug.Log("hi4");
     }
 }
