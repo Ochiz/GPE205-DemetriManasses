@@ -31,4 +31,8 @@ public class TankPawn : Pawn
     {
         mover.Rotate(-turnSpeed);
     }
+    public override void HealthChange(float healthAmount)
+    {
+        health = healthAmount + healthAmount;
+    }
 }
