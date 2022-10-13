@@ -34,6 +34,7 @@ public class GameManager : MonoBehaviour
     }
     public void SpawnPlayer()
     {
+        Debug.Log("hi");
         GameObject newPlayerObject = Instantiate(playerControllerPrefab, Vector3.zero, Quaternion.identity) as GameObject;
 
         GameObject newPawnObject = Instantiate(tankPawnPrefab, playerSpawnTransform.position, playerSpawnTransform.rotation) as GameObject;
