@@ -10,4 +10,5 @@ public abstract class Mover : MonoBehaviour
 
     // Update is called once per frame
     public abstract void Move(Vector3 direction, float speed);
+    public abstract void Rotate(float rotateSpeed);
 }
