@@ -51,7 +51,11 @@ public class TankPawn : Pawn
     }
     public override void Shoot()
     {
-        shooter.Shoot(shellPrefab, fireForce, damageDone, shellLifespan);
+        if (Time.time >= nextShootTime)
+        {
+            shooter.Shoot(shellPrefab, fireForce, damageDone, shellLifespan);
+            nextShootTime = Time.time + secondsPerShot;
+        }
     }
 
 }

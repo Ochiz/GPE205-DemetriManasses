@@ -8,12 +8,12 @@ public abstract class Pawn : MonoBehaviour
     public float turnSpeed;
     public Mover mover;
     public float fireRate;
-    private float secondsPerShot;
     public Shooter shooter;
     public GameObject shellPrefab;
     public float fireForce;
     public float damageDone;
     public float shellLifespan;
+    protected float secondsPerShot;
     // Start is called before the first frame update
     public virtual void Start()
     {
