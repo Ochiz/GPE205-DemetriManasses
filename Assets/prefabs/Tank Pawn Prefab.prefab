@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2350500346527148840
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5150876620631376721}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5150876620631376721
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2350500346527148840}
+  m_LocalRotation: {x: -0, y: 0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.6, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3665320909626348213}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4149510008165845007
 GameObject:
   m_ObjectHideFlags: 0
@@ -31,11 +62,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4149510008165845007}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 5150876620631376721}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -147,6 +179,12 @@ MonoBehaviour:
   moveSpeed: 5
   turnSpeed: 360
   mover: {fileID: 0}
+  fireRate: 1
+  shooter: {fileID: 0}
+  shellPrefab: {fileID: 108506621554659640, guid: bc85408369b7b1343870df10a78c002d, type: 3}
+  fireForce: 1000
+  damageDone: 10
+  shellLifespan: 1.5
 --- !u!114 &430122447652992003
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -173,3 +211,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95c525a0b6ff04d409490884dd442d76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  firepointTransform: {fileID: 5150876620631376721}

@@ -9,11 +9,17 @@ public abstract class Pawn : MonoBehaviour
     public Mover mover;
     public float fireRate;
     private float secondsPerShot;
+    public Shooter shooter;
+    public GameObject shellPrefab;
+    public float fireForce;
+    public float damageDone;
+    public float shellLifespan;
     // Start is called before the first frame update
     public virtual void Start()
     {
         secondsPerShot = 1 / fireRate;
         mover = GetComponent<Mover>();
+        shooter = GetComponent<Shooter>();
     }
 
     // Update is called once per frame
@@ -25,4 +31,5 @@ public abstract class Pawn : MonoBehaviour
     public abstract void MoveBackward(bool sprint);
     public abstract void RotateClockwise();
     public abstract void RotateCounterClockwise();
+    public abstract void Shoot();
 }

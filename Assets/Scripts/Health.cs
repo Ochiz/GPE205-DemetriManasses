@@ -17,4 +17,22 @@ public class Health : MonoBehaviour
     {
         
     }
+    public void Die(Pawn source)
+    {
+        Destroy(gameObject);
+    }
+    public void TakeDamage(float amount, Pawn source)
+    {
+        currentHealth = currentHealth - amount;
+        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+        if (currentHealth <= 0)
+        {
+            Die(source);
+        }
+    }
+    public void Heal(float amount, Pawn source)
+    {
+        currentHealth = currentHealth + amount;
+        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+    }
 }
