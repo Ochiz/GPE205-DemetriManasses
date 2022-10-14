@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TankHealth : Health
+public class TankShooter : Shooter
 {
     // Start is called before the first frame update
     public override void Start()
@@ -14,9 +14,5 @@ public class TankHealth : Health
     public override void Update()
     {
         
-    }
-    public override void HealthChange(int healthAmount)
-    {
-        currentHealth = currentHealth + healthAmount;
     }
 }

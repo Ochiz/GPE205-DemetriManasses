@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
     public GameObject playerControllerPrefab;
     public GameObject tankPawnPrefab;
     public Transform playerSpawnTransform;
+    public List<PlayerController> players;
     private void Awake()
     {
 
@@ -26,7 +27,6 @@ public class GameManager : MonoBehaviour
     {
         SpawnPlayer();
     }
-
     // Update is called once per frame
     void Update()
     {
@@ -34,7 +34,6 @@ public class GameManager : MonoBehaviour
     }
     public void SpawnPlayer()
     {
-        Debug.Log("hi");
         GameObject newPlayerObject = Instantiate(playerControllerPrefab, Vector3.zero, Quaternion.identity) as GameObject;
 
         GameObject newPawnObject = Instantiate(tankPawnPrefab, playerSpawnTransform.position, playerSpawnTransform.rotation) as GameObject;

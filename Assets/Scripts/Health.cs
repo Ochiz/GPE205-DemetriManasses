@@ -2,13 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Health : MonoBehaviour
+public class Health : MonoBehaviour
 {
-    public static int maxHealth;
-    public int currentHealth;
+    public float currentHealth;
+    public float maxHealth;
     // Start is called before the first frame update
-    public abstract void Start();
+    void Start()
+    {
+        currentHealth = maxHealth;
+    }
+
     // Update is called once per frame
-    public abstract void Update();
-    public abstract void HealthChange(int healthAmount);
+    void Update()
+    {
+        
+    }
 }

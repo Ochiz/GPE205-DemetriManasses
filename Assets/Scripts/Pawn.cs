@@ -7,9 +7,12 @@ public abstract class Pawn : MonoBehaviour
     public float moveSpeed;
     public float turnSpeed;
     public Mover mover;
+    public float fireRate;
+    private float secondsPerShot;
     // Start is called before the first frame update
     public virtual void Start()
     {
+        secondsPerShot = 1 / fireRate;
         mover = GetComponent<Mover>();
     }
 
@@ -18,8 +21,8 @@ public abstract class Pawn : MonoBehaviour
     {
         
     }
-    public abstract void MoveForward();
-    public abstract void MoveBackward();
+    public abstract void MoveForward(bool sprint);
+    public abstract void MoveBackward(bool sprint);
     public abstract void RotateClockwise();
     public abstract void RotateCounterClockwise();
 }
