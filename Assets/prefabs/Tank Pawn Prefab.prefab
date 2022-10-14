@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 3843660172181334619}
   - component: {fileID: 3843660172181334621}
   - component: {fileID: 3843660172181334622}
+  - component: {fileID: 8791152641251942688}
   m_Layer: 0
   m_Name: Tank Pawn Prefab
   m_TagString: Untagged
@@ -142,8 +143,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95297d6e8a69a0b49905255a68ae5b8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 100
-  maxHealth: 100
   moveSpeed: 5
   turnSpeed: 360
   mover: {fileID: 0}
+--- !u!114 &8791152641251942688
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4149510008165845007}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3daaafd684d9a32478283e0eda2b804e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentHealth: 100
