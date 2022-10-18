@@ -57,5 +57,11 @@ public class TankPawn : Pawn
             nextShootTime = Time.time + secondsPerShot;
         }
     }
+    public override void RotateTowards(Vector3 targetPosition)
+    {
+        Vector3 vectorToTarget = targetPosition - transform.position;
+        Quaternion targetRotation = Quaternion.LookRotation(vectorToTarget, Vector3.up);
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, turnSpeed * Time.deltaTime);
+    }
 
 }
