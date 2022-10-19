@@ -6,8 +6,9 @@ public class AIController : Controller
 {
     public enum AIState {Idle, Guard, Chase, Flee, Patrol, Attack, Scan, BackToPost };
     public AIState currentState;
-    public float lastStateChangeTime;
+    private float lastStateChangeTime;
     public GameObject target;
+    public float fleeDistance;
     // Start is called before the first frame update
     public override void Start()
     {
@@ -21,43 +22,113 @@ public class AIController : Controller
         MakeDecisions();
         base.Update();
     }
+
     public void MakeDecisions()
     {
-        DoSeekState();
+        switch (currentState)
+        {
+            case AIState.Idle:
+                DoIdleState();
+                if (IsDistanceLessThan(target, 10))
+                {
+                    ChangeState(AIState.Chase);
+                }
+                break;
+            case AIState.Chase:
+                DoAttackState();
+                if (!IsDistanceLessThan(target, 10))
+                {
+                    ChangeState(AIState.Idle);
+                }
+                break;
+            case AIState.Flee:
+                DoFleeState();
+                break;
+
+        }
+
     }
+
     public override void ProcessInputs()
     {
 
     }
+
     public virtual void ChangeState(AIState newState)
     {
         currentState = newState;
         lastStateChangeTime = Time.time;
     }
-    public void DoSeekState()
+
+    public void DoAttackState()
     {
        Seek(target);
+       Shoot();
     }
+
     public void Seek(GameObject target)
     {
         pawn.RotateTowards(target.transform.position);
         pawn.MoveForward(false);
     }
+
     public void Seek(Vector3 targetPosition)
     {
         pawn.RotateTowards(targetPosition);
         pawn.MoveForward(false);
     }
+
     public void Seek(Pawn targetPawn)
     {
         Seek(targetPawn.transform);
     }
+
     public void Seek(Transform targetTransform)
     {
         Seek(targetTransform.position);
     }
+
     public void Seek(Controller targetController)
     {
         Seek(targetController.pawn);
+    }
+
+    protected virtual void DoIdleState()
+    {
+
+    }
+
+    protected bool IsDistanceLessThan(GameObject target, float distance)
+    {
+        if (Vector3.Distance(pawn.transform.position, target.transform.position) < distance)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public void Shoot()
+    {
+        pawn.Shoot();
+    }
+
+    protected void Flee()
+    {
+        float targetDistance = Vector3.Distance(target.transform.position, pawn.transform.position);
+        float percentOfFleeDistance = targetDistance / fleeDistance;
+        percentOfFleeDistance = Mathf.Clamp01(percentOfFleeDistance);
+        float flippedPercentOfFleeDistance = 1 - percentOfFleeDistance;
+        //need to finish
+        Vector3 vectorToTarget = target.transform.position - pawn.transform.position;
+        Vector3 vectorAwayFromTarget = -vectorToTarget;
+        Vector3 fleeVector = vectorAwayFromTarget.normalized * fleeDistance;
+        Seek(pawn.transform.position + fleeVector);
+    }
+    public void DoFleeState()
+    {
+        Flee();
     }
 }
