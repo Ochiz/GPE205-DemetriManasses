@@ -4,11 +4,14 @@ using UnityEngine;
 
 public class AIController : Controller
 {
-    public enum AIState {Idle, Guard, Chase, Flee, Patrol, Attack, Scan, BackToPost };
+    public enum AIState {Idle, Guard, Chase, Flee, Patrol, Attack, Scan, BackToPost, ChooseTarget };
     public AIState currentState;
     private float lastStateChangeTime;
     public GameObject target;
     public float fleeDistance;
+    public Transform[] waypoints;
+    public float waypointStopDistance;
+    private int currentWaypoint = 0;
     // Start is called before the first frame update
     public override void Start()
     {
@@ -130,5 +133,69 @@ public class AIController : Controller
     public void DoFleeState()
     {
         Flee();
+    }
+    protected void Patrol()
+    {
+        if(waypoints.Length > currentWaypoint)
+        {
+            Seek(waypoints[currentWaypoint]);
+            if(Vector3.Distance(pawn.transform.position, waypoints[currentWaypoint].position) < waypointStopDistance)
+            {
+                currentWaypoint++;
+            }
+        }
+        else
+        {
+            RestartPatrol();
+        }
+    }
+    protected void RestartPatrol()
+    {
+        currentWaypoint = 0;
+    }
+    public void targetPlayerOne()
+    {
+        if(GameManager.instance != null)
+        {
+            if(GameManager.instance.players != null)
+            {
+                if(GameManager.instance.players.Count > 0)
+                {
+                    target = GameManager.instance.players[0].pawn.gameObject;
+                }
+            }
+        }
+    }
+    protected void targetNearestTank()
+    {
+        Pawn[] allTanks = FindObjectsOfType<Pawn>();
+        Pawn closestTank = allTanks[0];
+        float closestTankDistance = Vector3.Distance(pawn.transform.position, closestTank.transform.position);
+
+        foreach (Pawn tank in allTanks)
+        {
+            if (Vector3.Distance(pawn.transform.position, tank.transform.position) <= closestTankDistance)
+            {
+                closestTank = tank;
+                closestTankDistance = Vector3.Distance(pawn.transform.position, closestTank.transform.position);
+            }
+        }
+        target = closestTank.gameObject;
+    }
+    protected void targetLowestHealthTank()
+    {
+
+    }
+    protected bool IsHasTarget()
+    {
+        return (target != null);
+    }
+    protected void ChooseTarget()
+    {
+       
+    }
+    public void DoChooseTargetState()
+    {
+        ChooseTarget();
     }
 }
