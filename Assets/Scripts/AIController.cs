@@ -5,13 +5,25 @@ using UnityEngine;
 public class AIController : Controller
 {
     public enum AIState {Idle, Guard, Chase, Flee, Patrol, Attack, Scan, BackToPost, ChooseTarget };
+
     public AIState currentState;
+
+    public float hearingDistance;
+
+    public float fieldOfView;
+
     private float lastStateChangeTime;
+
     public GameObject target;
+
     public float fleeDistance;
+
     public Transform[] waypoints;
+
     public float waypointStopDistance;
+
     private int currentWaypoint = 0;
+
     // Start is called before the first frame update
     public override void Start()
     {
@@ -32,6 +44,7 @@ public class AIController : Controller
         {
             case AIState.Idle:
                 DoIdleState();
+                DoChooseTargetState();
                 if (IsDistanceLessThan(target, 10))
                 {
                     ChangeState(AIState.Chase);
@@ -43,13 +56,33 @@ public class AIController : Controller
                 {
                     ChangeState(AIState.Idle);
                 }
+                if(pawn.health.currentHealth <= 30)
+                {
+                    ChangeState(AIState.Flee);
+                }
                 break;
             case AIState.Flee:
                 DoFleeState();
+                if (!IsDistanceLessThan(target, 10))
+                {
+                    ChangeState(AIState.Idle);
+                }
                 break;
 
         }
 
+    }
+
+    protected bool IsDistanceLessThan(GameObject target, float distance)
+    {
+        if (Vector3.Distance(pawn.transform.position, target.transform.position) < distance)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     public override void ProcessInputs()
@@ -101,18 +134,6 @@ public class AIController : Controller
 
     }
 
-    protected bool IsDistanceLessThan(GameObject target, float distance)
-    {
-        if (Vector3.Distance(pawn.transform.position, target.transform.position) < distance)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
     public void Shoot()
     {
         pawn.Shoot();
@@ -120,20 +141,21 @@ public class AIController : Controller
 
     protected void Flee()
     {
-        float targetDistance = Vector3.Distance(target.transform.position, pawn.transform.position);
-        float percentOfFleeDistance = targetDistance / fleeDistance;
-        percentOfFleeDistance = Mathf.Clamp01(percentOfFleeDistance);
-        float flippedPercentOfFleeDistance = 1 - percentOfFleeDistance;
-        //need to finish
+        float targetDistance = Vector3.Distance(target.transform.position, pawn.transform.position); // gets distance between target and AI
+        float percentOfFleeDistance = targetDistance / fleeDistance; //determins what percent of the flee distance is the current distance away
+        percentOfFleeDistance = Mathf.Clamp01(percentOfFleeDistance); //clamps flee distance into number between 0 and 1 for percentage math
+        float flippedPercentOfFleeDistance = 1 - percentOfFleeDistance; // flips flee distance 
         Vector3 vectorToTarget = target.transform.position - pawn.transform.position;
         Vector3 vectorAwayFromTarget = -vectorToTarget;
-        Vector3 fleeVector = vectorAwayFromTarget.normalized * fleeDistance;
-        Seek(pawn.transform.position + fleeVector);
+        Vector3 fleeVector = vectorAwayFromTarget.normalized * (fleeDistance * flippedPercentOfFleeDistance);
+        Seek(pawn.transform.position + fleeVector.normalized);
     }
+
     public void DoFleeState()
     {
         Flee();
     }
+
     protected void Patrol()
     {
         if(waypoints.Length > currentWaypoint)
@@ -149,11 +171,13 @@ public class AIController : Controller
             RestartPatrol();
         }
     }
+
     protected void RestartPatrol()
     {
         currentWaypoint = 0;
     }
-    public void targetPlayerOne()
+
+    public void TargetPlayerOne()
     {
         if(GameManager.instance != null)
         {
@@ -166,7 +190,8 @@ public class AIController : Controller
             }
         }
     }
-    protected void targetNearestTank()
+
+    protected void TargetNearestTank()
     {
         Pawn[] allTanks = FindObjectsOfType<Pawn>();
         Pawn closestTank = allTanks[0];
@@ -182,20 +207,73 @@ public class AIController : Controller
         }
         target = closestTank.gameObject;
     }
-    protected void targetLowestHealthTank()
-    {
 
+    protected void TargetLowestHealthTank()
+    {
+        Pawn[] allTanks = FindObjectsOfType<Pawn>();
+        Pawn lowestHPTank = allTanks[0];
+        float lowestHP = lowestHPTank.health.currentHealth;
+
+        foreach (Pawn tank in allTanks)
+        {
+            if (tank.health.currentHealth <= lowestHP)
+            {
+                lowestHPTank = tank;
+                lowestHP = lowestHPTank.health.currentHealth;
+            }
+        }
+        target = lowestHPTank.gameObject;
     }
+
     protected bool IsHasTarget()
     {
         return (target != null);
     }
+
     protected void ChooseTarget()
     {
-       
+        TargetPlayerOne(); ;
     }
+
     public void DoChooseTargetState()
     {
         ChooseTarget();
     }
+
+    public bool CanHear(GameObject target)
+    {
+        NoiseMaker noiseMaker = target.GetComponent<NoiseMaker>();
+        if(noiseMaker == null)
+        {
+            return false;
+        }
+        if(noiseMaker.volumeDistance <=0)
+        {
+            return false;
+        }
+        float totalDistance = noiseMaker.volumeDistance + hearingDistance;
+        if(Vector3.Distance(pawn.transform.position, target.transform.position) <= totalDistance)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public bool CanSee(GameObject target)
+    {
+        Vector3 angleToTargetVector = target.transform.position - transform.position;
+        float angleToTarget = Vector3.Angle(angleToTargetVector, pawn.transform.forward);
+        if(angleToTarget < fieldOfView)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
 }
