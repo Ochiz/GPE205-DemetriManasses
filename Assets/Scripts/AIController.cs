@@ -44,8 +44,7 @@ public class AIController : Controller
         {
             case AIState.Idle:
                 DoIdleState();
-                DoChooseTargetState();
-                if (IsDistanceLessThan(target, 10))
+                if (CanSee(target))
                 {
                     ChangeState(AIState.Chase);
                 }

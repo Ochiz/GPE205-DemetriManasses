@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class PowerupManager : MonoBehaviour
 {
-    public List<Powerup> powerups;
+
     // Start is called before the first frame update
-    void Start()
+    public List<Powerup> powerups;
+    private List<Powerup> removedPowerupQueue;
+    public virtual void Start()
     {
-        
+        powerups = new List<Powerup>();
     }
 
     // Update is called once per frame
@@ -16,14 +18,41 @@ public class PowerupManager : MonoBehaviour
     {
         
     }
+    private void LateUpdate()
+    {
+        ApllyRemovePowerupsQueue();
+    }
 
     public void Add(Powerup powerupToAdd)
     {
+        powerupToAdd.Apply(this);
         powerups.Add(powerupToAdd);
     }
 
     public void Remove(Powerup powerupToRemove)
     {
-        powerups.Remove(powerupToRemove);
+        powerupToRemove.Remove(this);
+        removedPowerupQueue.Add(powerupToRemove);
     }
+    public void DecrementPowerupTimers()
+    {
+        foreach (Powerup powerup in powerups)
+        {
+            powerup.duration -= Time.deltaTime;
+            if (powerup.duration <= 0)
+            {
+                Remove(powerup);
+            }
+        }
+
+    }
+    private void ApllyRemovePowerupsQueue()
+    {
+        foreach (Powerup powerup in removedPowerupQueue)
+        {
+            powerups.Remove(powerup);
+        }
+        removedPowerupQueue.Clear();
+    }
+
 }

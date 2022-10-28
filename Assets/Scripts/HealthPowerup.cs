@@ -25,12 +25,10 @@ public class HealthPowerup : Powerup
 
     public override void Apply(PowerupManager target)
     {
-        foreach(Powerup powerup in target.powerups)
+        Health targetHealth = target.GetComponent<Health>();
+        if(targetHealth != null)
         {
-            if(powerup == HealthPowerup)
-            {
-               
-            }
+            targetHealth.Heal(healthToAdd, target.GetComponent<Pawn>());  
         }
     }
 
