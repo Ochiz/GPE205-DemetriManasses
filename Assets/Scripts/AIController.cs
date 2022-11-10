@@ -27,6 +27,14 @@ public class AIController : Controller
     // Start is called before the first frame update
     public override void Start()
     {
+        DoChooseTargetState();
+        if (GameManager.instance != null)
+        {
+            if (GameManager.instance.aiPlayers != null)
+            {
+                GameManager.instance.aiPlayers.Add(this);
+            }
+        }
         ChangeState(AIState.Idle);
         base.Start();
     }
@@ -44,7 +52,7 @@ public class AIController : Controller
         {
             case AIState.Idle:
                 DoIdleState();
-                if (CanSee(target))
+                if (IsDistanceLessThan(target, 10))
                 {
                     ChangeState(AIState.Chase);
                 }
@@ -86,7 +94,7 @@ public class AIController : Controller
 
     public override void ProcessInputs()
     {
-
+        //nothing here
     }
 
     public virtual void ChangeState(AIState newState)
@@ -130,7 +138,7 @@ public class AIController : Controller
 
     protected virtual void DoIdleState()
     {
-
+        //nothing
     }
 
     public void Shoot()
@@ -231,7 +239,7 @@ public class AIController : Controller
 
     protected void ChooseTarget()
     {
-        TargetPlayerOne(); ;
+        TargetPlayerOne(); 
     }
 
     public void DoChooseTargetState()
@@ -272,6 +280,16 @@ public class AIController : Controller
         else
         {
             return false;
+        }
+    }
+    public void OnDestroy()
+    {
+        if (GameManager.instance != null)
+        {
+            if (GameManager.instance.aiPlayers != null)
+            {
+                GameManager.instance.aiPlayers.Remove(this);
+            }
         }
     }
 

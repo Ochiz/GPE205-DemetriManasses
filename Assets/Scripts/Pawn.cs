@@ -15,6 +15,7 @@ public abstract class Pawn : MonoBehaviour
     public float shellLifespan;
     protected float secondsPerShot;
     public Health health;
+    public PlayerController playerController;
     // Start is called before the first frame update
     public virtual void Start()
     {
@@ -22,6 +23,7 @@ public abstract class Pawn : MonoBehaviour
         mover = GetComponent<Mover>();
         shooter = GetComponent<Shooter>();
         health = GetComponent<Health>();
+        playerController = GetComponent<PlayerController>();
     }
 
     // Update is called once per frame

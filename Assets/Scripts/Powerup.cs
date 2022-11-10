@@ -5,6 +5,16 @@ using UnityEngine;
 
 public abstract class Powerup : MonoBehaviour
 {
+    public virtual void Start()
+    {
+        if (GameManager.instance != null)
+        {
+            if (GameManager.instance.allPowerups != null)
+            {
+                GameManager.instance.allPowerups.Add(this);
+            }
+        }
+    }
     public float duration;
     public bool isPermanent;
     public abstract void Apply(PowerupManager target);

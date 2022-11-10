@@ -48,11 +48,14 @@ public class PowerupManager : MonoBehaviour
     }
     private void ApllyRemovePowerupsQueue()
     {
-        foreach (Powerup powerup in removedPowerupQueue)
+        if (removedPowerupQueue != null)
         {
-            powerups.Remove(powerup);
+            foreach (Powerup powerup in removedPowerupQueue)
+            {
+                powerups.Remove(powerup);
+            }
+            removedPowerupQueue.Clear();
         }
-        removedPowerupQueue.Clear();
     }
 
 }

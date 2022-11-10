@@ -6,6 +6,7 @@ public class Health : MonoBehaviour
 {
     public float currentHealth;
     public float maxHealth;
+    public float killScoreToAdd;
     // Start is called before the first frame update
     void Start()
     {
@@ -19,7 +20,15 @@ public class Health : MonoBehaviour
     }
     public void Die(Pawn source)
     {
-        Destroy(gameObject);
+        gameObject.GetComponent<PlayerController>().playerLives -= 1;
+        if (gameObject.GetComponent<PlayerController>().playerLives <= 0)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            currentHealth = maxHealth;
+        }
     }
     public void TakeDamage(float amount, Pawn source)
     {
@@ -28,6 +37,7 @@ public class Health : MonoBehaviour
         if (currentHealth <= 0)
         {
             Die(source);
+            source.playerController.AddScore(killScoreToAdd);
         }
     }
     public void Heal(float amount, Pawn source)

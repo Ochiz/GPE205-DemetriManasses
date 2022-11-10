@@ -12,9 +12,9 @@ public class HealthPowerup : Powerup
     public HealthPowerup powerup;
 
     // Start is called before the first frame update
-    void Start()
+    public override void Start()
     {
-        
+        base.Start();
     }
 
     // Update is called once per frame
@@ -34,7 +34,7 @@ public class HealthPowerup : Powerup
 
     public override void Remove(PowerupManager target)
     {
-
+        target.Remove(powerup);
     }
     public void OnTriggerEvent(Collider other)
     {
